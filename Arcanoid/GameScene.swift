@@ -9,13 +9,15 @@
 import SpriteKit
 import GameplayKit
 
+
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    var menuCreator:MenuCreator!
+    
     
     override func didMove(to view: SKView) {
-        
+        super.didMove(to: view)
+        self.menuCreator = MenuCreator.init(scene: self.scene!)
     }
     
     
