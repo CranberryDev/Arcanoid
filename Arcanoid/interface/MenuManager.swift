@@ -12,10 +12,17 @@ import SpriteKit
 class MenuManager {
     
     struct NodeName {
+        //Main menu names
         static let playButton = "playButtonNode"
         static let choseButton = "choseLevelNode"
         static let gameTitle = "gameTitleNode"
         static let scoreLabel = "scoreLabelNode"
+        
+        //Level difficulty names
+        static let easyButton = "easyButtonNode"
+        static let mediumButton = "mediumButtonNode"
+        static let hardButton = "hardButtonNode"
+        static let backButton = "backButtonNode"
     }
 
     var menuCreator:MenuCreator!
@@ -26,8 +33,18 @@ class MenuManager {
         self.menuCreator = MenuCreator.init(scene: scene!)
     }
     
+    public func touchEndedHandler(touchedNodes: [SKNode?]) {
+        for n in touchedNodes {
+            guard let node = n else {
+                continue
+            }
+            if node.name == NodeName.playButton {
+                menuCreator.fromMainMenuToLevelDifficultyMenu()
+            }
+        }
+    }
     
-    public func touchHandler(touchedNodes: [SKNode?]) {
+    public func touchBeganHandler(touchedNodes: [SKNode?]) {
         for n in touchedNodes {
             guard let node = n else {
                 continue

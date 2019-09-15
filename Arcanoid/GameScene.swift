@@ -32,7 +32,7 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             let touchedNodes = self.nodes(at: location)
-//            menuManager.touchHandler(touchedNodes: touchedNodes)
+            menuManager.touchEndedHandler(touchedNodes: touchedNodes)
         }
     }
     
@@ -40,7 +40,7 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             let touchedNodes = self.nodes(at: location)
-            menuManager.touchHandler(touchedNodes: touchedNodes)
+            menuManager.touchBeganHandler(touchedNodes: touchedNodes)
         }
     }
 }

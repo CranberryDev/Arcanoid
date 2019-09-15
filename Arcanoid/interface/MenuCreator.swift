@@ -15,22 +15,24 @@ class MenuCreator {
     
     var scene:SKScene
     
+    //Main menu props
     var gameTitle:SKLabelNode = SKLabelNode(fontNamed: fontName)
     var bestScore:SKLabelNode = SKLabelNode(fontNamed: fontName)
-    var playButton:ButtonComponents = ButtonComponents()
-    var levelButton:ButtonComponents = ButtonComponents()
+    var playButton:ButtonComponent = ButtonComponent()
+    var levelButton:ButtonComponent = ButtonComponent()
     
+    //Level difficulty props
+    var backButton:SKShapeNode!
+    var easyButton:ButtonComponent = ButtonComponent()
+    var mediumButton:ButtonComponent = ButtonComponent()
+    var hardButton:ButtonComponent = ButtonComponent()
     
-    struct ButtonComponents {
-        var outerShape:SKShapeNode!
-        var innerShape:SKShapeNode!
-        var textLabel:SKLabelNode!
-    }
     
     public init(scene: SKScene) {
         self.scene = scene
         
         initMainMenu()
+        initLevelDifficultyMenu()
         showMenu()
     }
     
@@ -47,8 +49,74 @@ class MenuCreator {
         bestScore.isHidden = false
     }
     
+    func fromMainMenuToLevelDifficultyMenu() {
+        collapseButtonElement(obj: playButton)
+        collapseButtonElement(obj: levelButton)
+        
+        backButton.setScale(0)
+        backButton.isHidden = false
+        backButton.run(SKAction.scale(to: 1, duration: 0.5))
+        
+        expandButtonElement(obj: easyButton)
+        expandButtonElement(obj: mediumButton)
+        expandButtonElement(obj: hardButton)
+        
+    }
+    
     
     //MARK: Private methods
+    
+    private func collapseButtonElement(obj: ButtonComponent) {
+        obj.innerShape.run(SKAction.scale(to: 0, duration: 0.5))
+        obj.outerShape.run(SKAction.scale(to: 0, duration: 0.5))
+        obj.textLabel.run(SKAction.scale(to: 0, duration: 0.5), completion: {
+            obj.innerShape!.isHidden = true
+            obj.outerShape!.isHidden = true
+            obj.textLabel!.isHidden = true
+        })
+    }
+    
+    private func expandButtonElement(obj: ButtonComponent) {
+        obj.innerShape.setScale(0)
+        obj.outerShape.setScale(0)
+        obj.textLabel.setScale(0)
+        
+        obj.innerShape.isHidden = false
+        obj.outerShape.isHidden = false
+        obj.textLabel.isHidden = false
+        
+        obj.innerShape.run(SKAction.scale(to: 1, duration: 0.5))
+        obj.outerShape.run(SKAction.scale(to: 1, duration: 0.5))
+        obj.textLabel.run(SKAction.scale(to: 1, duration: 0.5))
+    }
+    
+    private func initLevelDifficultyMenu() {
+        //Create levels buttons
+        createButton(text: "Easy", name: MenuManager.NodeName.easyButton, mainOffset: 0, obj: easyButton)
+        createButton(text: "Medium", name: MenuManager.NodeName.mediumButton, mainOffset: 150, obj: mediumButton)
+        createButton(text: "Hard", name: MenuManager.NodeName.hardButton, mainOffset: 300, obj: hardButton)
+        
+        //Create back button
+        let topPoint: CGPoint = CGPoint(x: 25, y: 20)
+        let bottomPoint: CGPoint = CGPoint(x: 25, y: -20)
+        let rightPoint: CGPoint = CGPoint(x: 60, y: 0)
+        let zeroPoint: CGPoint = CGPoint(x: 0, y: 0)
+        let path: CGMutablePath = CGMutablePath()
+        path.addLines(between: [topPoint, zeroPoint])
+        path.addLines(between: [bottomPoint, zeroPoint])
+        path.addLines(between: [zeroPoint, rightPoint])
+        
+        backButton = SKShapeNode(path: path)
+        backButton.zPosition = 1
+        backButton.position = CGPoint(x: -(scene.size.width/2) + 50, y: scene.size.height/2 - 250)
+        backButton.strokeColor = SKColor.black
+        backButton.lineWidth = 7
+        backButton.lineCap = CGLineCap(rawValue: 1)!
+        backButton.name = MenuManager.NodeName.backButton
+        backButton.isHidden = true
+        
+        self.scene.addChild(backButton)
+    }
     
     private func initMainMenu() {
         scene.backgroundColor = SKColor.lightGray
@@ -65,8 +133,8 @@ class MenuCreator {
         scene.addChild(gameTitle)
         
         //Init play button
-        createButton(text: "Play", name: MenuManager.NodeName.playButton, mainOffset: 0, obj: &playButton)
-        createButton(text: "Level", name: MenuManager.NodeName.choseButton, mainOffset: 150, obj: &levelButton)
+        createButton(text: "Play", name: MenuManager.NodeName.playButton, mainOffset: 0, obj: playButton)
+        createButton(text: "Level", name: MenuManager.NodeName.choseButton, mainOffset: 150, obj: levelButton)
         
         //Init score label
         bestScore.zPosition = 1
@@ -81,7 +149,7 @@ class MenuCreator {
     }
     
     
-    private func createButton(text: String, name: String, mainOffset: Int, obj: inout ButtonComponents) {
+    private func createButton(text: String, name: String, mainOffset: Int, obj: ButtonComponent) {
         let width = 250
         let height = 100
         let cornerRadius:CGFloat = CGFloat(40)

@@ -16,6 +16,7 @@
 		2A51C0B7232E200B00C29AA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A51C0B5232E200B00C29AA4 /* LaunchScreen.storyboard */; };
 		2A51C0C0232E23F100C29AA4 /* MenuCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0BF232E23F100C29AA4 /* MenuCreator.swift */; };
 		2A51C0C5232E456000C29AA4 /* MenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0C4232E456000C29AA4 /* MenuManager.swift */; };
+		2A51C0C7232E80D200C29AA4 /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0C6232E80D200C29AA4 /* ButtonComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		2A51C0B8232E200B00C29AA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2A51C0BF232E23F100C29AA4 /* MenuCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCreator.swift; sourceTree = "<group>"; };
 		2A51C0C4232E456000C29AA4 /* MenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuManager.swift; sourceTree = "<group>"; };
+		2A51C0C6232E80D200C29AA4 /* ButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			children = (
 				2A51C0BF232E23F100C29AA4 /* MenuCreator.swift */,
 				2A51C0C4232E456000C29AA4 /* MenuManager.swift */,
+				2A51C0C6232E80D200C29AA4 /* ButtonComponent.swift */,
 			);
 			path = interface;
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A51C0C5232E456000C29AA4 /* MenuManager.swift in Sources */,
+				2A51C0C7232E80D200C29AA4 /* ButtonComponent.swift in Sources */,
 				2A51C0AD232E200A00C29AA4 /* GameScene.swift in Sources */,
 				2A51C0C0232E23F100C29AA4 /* MenuCreator.swift in Sources */,
 				2A51C0AF232E200A00C29AA4 /* GameViewController.swift in Sources */,
