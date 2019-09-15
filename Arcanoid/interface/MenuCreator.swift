@@ -11,6 +11,7 @@ import SpriteKit
 class MenuCreator {
     
     static let fontName:String = "ArialRoundedMTBold"
+
     
     var scene:SKScene
     
@@ -58,14 +59,14 @@ class MenuCreator {
         gameTitle.text = "ARCANOID"
         gameTitle.fontColor = SKColor.red
         gameTitle.fontSize = 60
-        gameTitle.name = "gameTitleNode"
+        gameTitle.name = MenuManager.NodeName.gameTitle
         gameTitle.isHidden = true
         
         scene.addChild(gameTitle)
         
         //Init play button
-        createButton(text: "Play", name: "playButtonNode", mainOffset: 0, obj: &playButton)
-        createButton(text: "Level", name: "choseLevelNode", mainOffset: 150, obj: &levelButton)
+        createButton(text: "Play", name: MenuManager.NodeName.playButton, mainOffset: 0, obj: &playButton)
+        createButton(text: "Level", name: MenuManager.NodeName.choseButton, mainOffset: 150, obj: &levelButton)
         
         //Init score label
         bestScore.zPosition = 1
@@ -73,7 +74,7 @@ class MenuCreator {
         bestScore.fontSize = 50
         bestScore.fontColor = SKColor.gray
         bestScore.text = "Best score: 0"
-        bestScore.name = "scoreLabelNode"
+        bestScore.name = MenuManager.NodeName.scoreLabel
         bestScore.isHidden = true
         
         scene.addChild(bestScore)
