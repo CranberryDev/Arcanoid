@@ -55,40 +55,47 @@ class GameCreator {
         //Init gameBoard array
         let columns = 23
         let rows = 44
+        let gameRows = 23
         let cellMargin = 3
         
         let allX = Int(scene.size.width) - borderMargin*2 - lineWidth*2 - ((columns - 1)*cellMargin)
-        let allY = Int(scene.size.height) - borderMargin - bottomSpace - lineWidth
+        let allY = Int(scene.size.height) - borderMargin - bottomSpace - lineWidth - (rows - 1)*cellMargin
         
         let cellWidth = allX / columns
         let cellHeigth = allY / rows
         
         
-        var x = Int(scene.size.width / -2) + borderMargin*2 + lineWidth + cellMargin
-        var y = Int(scene.size.height / 2) - borderMargin*2 - lineWidth - cellMargin
+        let x = Int(scene.size.width / -2) + borderMargin*2 + lineWidth + cellMargin
+        let y = Int(scene.size.height / 2) - borderMargin*2 - lineWidth - cellMargin
         
         gameBorder = SKShapeNode()
         gameBorder.isHidden = true
-        for i in 0...columns - 1 {
-            var point = CGPoint(x: x, y: y)
-            var node = SKShapeNode(rectOf: CGSize(width: cellWidth, height: cellHeigth))
-            node.strokeColor = .cyan
-            node.isHidden = false
-            node.position = point
-            
-            gameBorder.addChild(node)
-            x += cellWidth
-            x += cellMargin
-//            y += cellHeigth
+        var loopY = y
+        for j in 0...rows - 1 {
+            var loopX = x
+            for i in 0...columns - 1 {
+                let point = CGPoint(x: loopX, y: loopY)
+                let node = SKShapeNode(rectOf: CGSize(width: cellWidth, height: cellHeigth))
+                node.isHidden = false
+                node.position = point
+                
+                //Show node if its in the game area
+                if j < gameRows {
+                    node.strokeColor = .cyan
+                } else {
+                    node.strokeColor = .clear
+                }
+                
+                boardArray.append((node: node, x: i, y: j))
+                gameBorder.addChild(node)
+                
+                loopX += cellWidth
+                loopX += cellMargin
+            }
+            loopY -= cellHeigth
+            loopY -= cellMargin
         }
         gameBorder.isHidden = false
-        
-//        var point:CGPoint = CGPoint(x: x, y: y)
-//        var test:SKShapeNode = SKShapeNode(rectOf: CGSize(width: cellWidth, height: cellHeigth))
-//        test.strokeColor = .cyan
-//        test.isHidden = false
-//        test.position = point
-//        scene.addChild(test)
         
         scene.addChild(gameBorder)
         
