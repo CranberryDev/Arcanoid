@@ -15,6 +15,8 @@ class PlayerObject {
     var width:Int
     var heigth:Int
     
+    var direction:Int = 0 //0 - no direction, 1 - left, 2 - right
+    
     public init(size:CGSize?) {
         self.node = SKShapeNode(rectOf: size!, cornerRadius: 10)
         self.width = Int(size!.width)
