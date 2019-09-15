@@ -74,6 +74,10 @@ class MenuCreator {
         
         expandButtonElement(obj: playButton)
         expandButtonElement(obj: levelButton)
+        
+        backButton.run(SKAction.scale(by: 0, duration: 0.5)) {
+            self.backButton.isHidden = true
+        }
     }
     
     

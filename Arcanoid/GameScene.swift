@@ -14,12 +14,14 @@ class GameScene: SKScene {
     
 //    public var menuCreator:MenuCreator!
     var menuManager:MenuManager!
+    var gameManager:GameManager!
     
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-//        self.menuCreator = MenuCreator.init(scene: self.scene!)
-        self.menuManager = MenuManager.init(scene: self.scene)
+
+//        self.menuManager = MenuManager.init(scene: self.scene)
+        self.gameManager = GameManager.init(scene: self.scene)
     }
     
     
