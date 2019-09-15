@@ -40,6 +40,8 @@ class MenuManager {
             }
             if node.name == NodeName.playButton {
                 menuCreator.fromMainMenuToLevelDifficultyMenu()
+            } else if node.name == NodeName.backButton {
+                menuCreator.fromLevelDifficyltyMenuToMainMenu()
             }
         }
     }

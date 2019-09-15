@@ -12,16 +12,18 @@ class MenuCreator {
     
     static let fontName:String = "ArialRoundedMTBold"
 
-    
     var scene:SKScene
     
-    //Main menu props
+    //MARK: Main menu props
+    
     var gameTitle:SKLabelNode = SKLabelNode(fontNamed: fontName)
     var bestScore:SKLabelNode = SKLabelNode(fontNamed: fontName)
     var playButton:ButtonComponent = ButtonComponent()
     var levelButton:ButtonComponent = ButtonComponent()
     
-    //Level difficulty props
+    
+    //MARK: Level difficulty props
+    
     var backButton:SKShapeNode!
     var easyButton:ButtonComponent = ButtonComponent()
     var mediumButton:ButtonComponent = ButtonComponent()
@@ -49,6 +51,9 @@ class MenuCreator {
         bestScore.isHidden = false
     }
     
+    
+    //MARK: Screen transfer methods
+    
     func fromMainMenuToLevelDifficultyMenu() {
         collapseButtonElement(obj: playButton)
         collapseButtonElement(obj: levelButton)
@@ -60,12 +65,21 @@ class MenuCreator {
         expandButtonElement(obj: easyButton)
         expandButtonElement(obj: mediumButton)
         expandButtonElement(obj: hardButton)
+    }
+    
+    func fromLevelDifficyltyMenuToMainMenu() {
+        collapseButtonElement(obj: easyButton)
+        collapseButtonElement(obj: mediumButton)
+        collapseButtonElement(obj: hardButton)
         
+        expandButtonElement(obj: playButton)
+        expandButtonElement(obj: levelButton)
     }
     
     
     //MARK: Private methods
     
+    //MARK: Animations
     private func collapseButtonElement(obj: ButtonComponent) {
         obj.innerShape.run(SKAction.scale(to: 0, duration: 0.5))
         obj.outerShape.run(SKAction.scale(to: 0, duration: 0.5))
@@ -89,6 +103,8 @@ class MenuCreator {
         obj.outerShape.run(SKAction.scale(to: 1, duration: 0.5))
         obj.textLabel.run(SKAction.scale(to: 1, duration: 0.5))
     }
+    
+    //MARK: Init methods
     
     private func initLevelDifficultyMenu() {
         //Create levels buttons
@@ -148,6 +164,8 @@ class MenuCreator {
         scene.addChild(bestScore)
     }
     
+    
+    //MARK: Core methods
     
     private func createButton(text: String, name: String, mainOffset: Int, obj: ButtonComponent) {
         let width = 250
