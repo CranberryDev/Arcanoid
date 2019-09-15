@@ -10,34 +10,42 @@ import SpriteKit
 
 class MenuCreator {
     
+    static let fontName:String = "ArialRoundedMTBold"
+    
     var scene:SKScene
     
-    var gameTitle:SKLabelNode = SKLabelNode()
-    var bestScore:SKLabelNode = SKLabelNode()
-    
+    var gameTitle:SKLabelNode = SKLabelNode(fontNamed: fontName)
+    var bestScore:SKLabelNode = SKLabelNode(fontNamed: fontName)
     var playButton:ButtonComponents = ButtonComponents()
     var levelButton:ButtonComponents = ButtonComponents()
     
     
-    struct ButtonComponents{
+    struct ButtonComponents {
         var outerShape:SKShapeNode!
         var innerShape:SKShapeNode!
         var textLabel:SKLabelNode!
     }
     
-    let fontName:String = "ArialRoundedMTBold"
-    
     public init(scene: SKScene) {
         self.scene = scene
         
         initMainMenu()
+        showMenu()
     }
     
     func showMenu() {
         playButton.innerShape.isHidden = false
         playButton.outerShape.isHidden = false
         playButton.textLabel.isHidden = false
+
+        levelButton.innerShape.isHidden = false
+        levelButton.outerShape.isHidden = false
+        levelButton.textLabel.isHidden = false
+        
+        gameTitle.isHidden = false
+        bestScore.isHidden = false
     }
+    
     
     //MARK: Private methods
     
@@ -49,17 +57,26 @@ class MenuCreator {
         gameTitle.position = CGPoint(x: 0, y: scene.size.height / 3)
         gameTitle.text = "ARCANOID"
         gameTitle.fontColor = SKColor.red
-        gameTitle.fontName = fontName
         gameTitle.fontSize = 60
         gameTitle.name = "gameTitleNode"
+        gameTitle.isHidden = true
         
         scene.addChild(gameTitle)
         
         //Init play button
         createButton(text: "Play", name: "playButtonNode", mainOffset: 0, obj: &playButton)
         createButton(text: "Level", name: "choseLevelNode", mainOffset: 150, obj: &levelButton)
-        showMenu()
         
+        //Init score label
+        bestScore.zPosition = 1
+        bestScore.position = CGPoint(x: 0, y: -(scene.size.height/2) + 100)
+        bestScore.fontSize = 50
+        bestScore.fontColor = SKColor.gray
+        bestScore.text = "Best score: 0"
+        bestScore.name = "scoreLabelNode"
+        bestScore.isHidden = true
+        
+        scene.addChild(bestScore)
     }
     
     
@@ -68,15 +85,16 @@ class MenuCreator {
         let height = 100
         let cornerRadius:CGFloat = CGFloat(40)
         let outerX = width / -2
-        let outerY = Int(scene.size.height / 5)
+        let outerY = Int(scene.size.height / 10)
         
+        //Create outer shape (border)
         let outerRect: CGRect = CGRect(x: outerX, y: outerY - mainOffset, width: width, height: height)
         obj.outerShape = SKShapeNode(rect: outerRect, cornerRadius: cornerRadius + 10)
         obj.outerShape.zPosition = 1
         obj.outerShape.fillColor = SKColor.black
         obj.outerShape.name = name
         
-        
+        //Create inner shape
         let xOffset = 7
         let yOffset = 7
         let innerWidth = width - (xOffset * 2)
@@ -86,13 +104,17 @@ class MenuCreator {
         obj.innerShape.fillColor = SKColor.white
         obj.innerShape.zPosition = 1
         
-        obj.textLabel = SKLabelNode(fontNamed: fontName)
+        //Create text label in the center
+        obj.textLabel = SKLabelNode(fontNamed: MenuCreator.fontName)
         obj.textLabel.text = text
         obj.textLabel.fontSize = 50
         obj.textLabel.fontColor = SKColor.black
         obj.textLabel.zPosition = 1
         obj.textLabel.position = CGPoint(x: 0, y: outerY + innerHeight/3 + yOffset - mainOffset)
-        obj.textLabel.isHidden = false
+        
+        obj.outerShape.isHidden = true
+        obj.innerShape.isHidden = true
+        obj.textLabel.isHidden = true
         
         scene.addChild(obj.outerShape)
         scene.addChild(obj.innerShape)
