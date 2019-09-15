@@ -20,7 +20,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
-//        self.menuManager = MenuManager.init(scene: self.scene)
+        self.menuManager = MenuManager.init(scene: self.scene)
         self.gameManager = GameManager.init(scene: self.scene)
     }
     

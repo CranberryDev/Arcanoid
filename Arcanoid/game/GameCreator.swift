@@ -17,6 +17,9 @@ class GameCreator {
     var gameBorder: SKShapeNode!
     var boardArray: [(node: SKNode, x: Int, y: Int)] = []
     var borders: SKShapeNode!
+//    var boll: SKShapeNode!
+    var boll:BollObject!
+    var player:PlayerObject!
     
     init(scene: SKScene!) {
         self.scene = scene
@@ -47,8 +50,8 @@ class GameCreator {
         borders = SKShapeNode(path: path)
         borders.lineWidth = CGFloat(lineWidth)
         borders.lineCap = CGLineCap(rawValue: 1)!
-        borders.isHidden = false
         borders.strokeColor = .gray
+        borders.isHidden = true
         
         scene.addChild(borders)
         
@@ -78,12 +81,14 @@ class GameCreator {
                 let node = SKShapeNode(rectOf: CGSize(width: cellWidth, height: cellHeigth))
                 node.isHidden = false
                 node.position = point
+                node.zPosition = 1
                 
                 //Show node if its in the game area
                 if j < gameRows {
                     node.strokeColor = .cyan
                 } else {
                     node.strokeColor = .clear
+                    node.isHidden = true
                 }
                 
                 boardArray.append((node: node, x: i, y: j))
@@ -95,10 +100,39 @@ class GameCreator {
             loopY -= cellHeigth
             loopY -= cellMargin
         }
-        gameBorder.isHidden = false
-        
         scene.addChild(gameBorder)
         
+        initPlayer(cellWidth: cellWidth, cellHeigth: cellHeigth, bottomSpace: bottomSpace, cellMargin: cellMargin)
+        initBoll(cellWidth: cellWidth, cellHeigth: cellHeigth, bottomSpace: bottomSpace, cellMargin: cellMargin)
+    }
+    
+    
+    private func initPlayer(cellWidth:Int, cellHeigth: Int, bottomSpace:Int, cellMargin:Int) {
+        let initX = 0
+        let initY = Int(scene.size.height / -2) + bottomSpace + cellHeigth
+        let width = cellWidth*3
+        let heigth = cellHeigth
+        
+        let node = SKShapeNode(rectOf: CGSize(width: width, height: heigth), cornerRadius: 5)
+        node.zPosition = 2
+        node.position = CGPoint(x: initX, y: initY)
+        node.fillColor = .red
+        
+        player = PlayerObject.init(size: CGSize(width: width, height: heigth))
+        scene.addChild(player.node)
+        player.node.isHidden = true
+    }
+    
+    private func initBoll(cellWidth:Int, cellHeigth:Int, bottomSpace:Int, cellMargin:Int) {
+        let x = 0
+        let y = Int(scene.size.height / -2) + bottomSpace + cellHeigth*2
+        let node = SKShapeNode(circleOfRadius: 15)
+        node.zPosition = 1
+        node.position = CGPoint(x: x, y: y)
+        node.fillColor = .green
+        boll = BollObject.init(boll: node, xVector: 1, yVector: 1)
+        scene.addChild(boll.boll)
+        boll.boll.isHidden = true
     }
     
 }

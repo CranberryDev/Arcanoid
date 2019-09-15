@@ -23,7 +23,7 @@ class GameManager {
     
     
     func showGame() {
-//        self.gameCreator.
+
     }
     
     
