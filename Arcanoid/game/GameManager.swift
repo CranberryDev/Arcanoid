@@ -39,6 +39,7 @@ class GameManager {
             timeToUpdate = currentTime + timeOfset
         } else {
             movePlayer()
+            moveBoll()
         }
     }
     
@@ -84,6 +85,77 @@ class GameManager {
         default:
             break;
         }
+    }
+    
+    func moveBoll() {
+        var shouldMove = true
+        let bollLocation:CGPoint = gameCreator.boll.boll!.position
+        
+        let bollOfset:CGFloat = 20
+        
+        if bollLocation.x + bollOfset >= gameCreator.border.rightLine.p1.x {
+            //Right border collision
+            gameCreator.boll.direction.x = -1
+        } else if bollLocation.x - bollOfset <= gameCreator.border.leftLine.p1.x {
+            //Left border collision
+            gameCreator.boll.direction.x = 1
+        } else if bollLocation.y + bollOfset >= gameCreator.border.topLine.p1.y {
+            //Top border collision
+            gameCreator.boll.direction.y = -1
+        } else if bollLocation.y <= gameCreator.border.leftLine.p1.y {
+            shouldMove = false
+            //End game
+        } else {
+            let contactedNodesBottom:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x, y: bollLocation.y - bollOfset))
+            let contactedNodesTop:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x, y: bollLocation.y + bollOfset))
+            let contactedNodesRight:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x + bollOfset, y: bollLocation.y))
+            let contactedNodesLeft:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x - bollOfset, y: bollLocation.y))
+            
+            if contactedNodesBottom.count != 1 {
+                for node in contactedNodesBottom {
+                    if node.name == NodeName.playerNode && !(gameCreator.boll.direction.x == 1 && gameCreator.boll.direction.y == 1) {
+                        //Change boll directino from left to right and from rigth to left
+                        gameCreator.boll.direction.y = -(gameCreator.boll.direction.y)
+                        break;
+                    } else if node.name == NodeName.cellNode {
+                        //Hide node cell and change direction
+                        gameCreator.gameBorder.removeChildren(in: [node])
+                        gameCreator.boll.direction.y = -(gameCreator.boll.direction.y)
+                        break;
+                    }
+                }
+            } else if contactedNodesTop.count != 1 {
+                for node in contactedNodesTop {
+                    if node.name == NodeName.cellNode {
+                        gameCreator.gameBorder.removeChildren(in: [node])
+                        gameCreator.boll.direction.y = -(gameCreator.boll.direction.y)
+                        break;
+                    }
+                }
+            } else if contactedNodesRight.count != 1 {
+                for node in contactedNodesRight {
+                    if node.name == NodeName.cellNode {
+                        gameCreator.gameBorder.removeChildren(in: [node])
+                        gameCreator.boll.direction.x = -(gameCreator.boll.direction.x)
+                        break;
+                    }
+                }
+            } else if contactedNodesLeft.count != 1 {
+                for node in contactedNodesLeft {
+                    if node.name == NodeName.cellNode {
+                        gameCreator.gameBorder.removeChildren(in: [node])
+                        gameCreator.boll.direction.x = -(gameCreator.boll.direction.x)
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if shouldMove {
+            gameCreator.boll.boll!.position.x += CGFloat(7 * gameCreator.boll.direction!.x)
+            gameCreator.boll.boll!.position.y += CGFloat(7 * gameCreator.boll.direction!.y)
+        }
+        
         
     }
     
