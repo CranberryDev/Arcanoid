@@ -18,6 +18,9 @@ class GameManager {
     var timeToUpdate:Double!
     var timeOfset:Double = 1
     
+    var logicUpdateTime:Double!
+    var frameTime:Double = 0.016
+    
     struct NodeName {
         static var borderNode = "borderNode"
         static var playerNode = "playerNode"
@@ -35,12 +38,15 @@ class GameManager {
         if timeToUpdate == nil {
             timeToUpdate = currentTime + timeOfset
         } else {
+            let currentTime = Date().timeIntervalSince1970
             if scene.gameState == GameScene.States.game {
                 movePlayer()
                 moveBoll()
+                logicUpdateTime = currentTime
             } else if scene.gameState == GameScene.States.endGame {
                 transferToEndGameScene()
             }
+            
         }
     }
     
@@ -72,7 +78,8 @@ class GameManager {
                 isMove = false
             }
             if isMove {
-                gameCreator.player.node!.position.x -= 10
+                let corrector = getCorrector()
+                gameCreator.player.node!.position.x = gameCreator.player.node!.position.x - CGFloat(10*corrector)
             }
         case 2:
             //Right
@@ -80,7 +87,8 @@ class GameManager {
                 isMove = false
             }
             if isMove {
-                gameCreator.player.node!.position.x += 10
+                let corrector = getCorrector()
+                gameCreator.player.node!.position.x = gameCreator.player.node!.position.x + CGFloat(10*corrector)
             }
         default:
             break;
@@ -195,6 +203,20 @@ class GameManager {
             self.gameCreator.border.border!.isHidden = true
         }
         menuManager.toEndGameMenu()
+    }
+    
+    
+    private func getCorrector() -> CGFloat {
+        var corrector:CGFloat = 1
+        if logicUpdateTime != nil {
+            let now:Double = Date().timeIntervalSince1970
+            corrector = CGFloat((now-logicUpdateTime)/frameTime)
+            corrector = CGFloat(Float(String(format: "%.2f", corrector))!)
+            if corrector <= 0 {
+                corrector = 1
+            }
+        }
+        return corrector
     }
     
     
