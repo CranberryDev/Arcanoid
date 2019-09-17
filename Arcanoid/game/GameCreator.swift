@@ -37,7 +37,7 @@ class GameCreator {
     
 
     func resetGame() {
-        scene.removeChildren(in: [boll.boll!, player.node!, gameBorder, border.border])
+        scene.removeChildren(in: [boll.boll, player.node, gameBorder, border.border])
         
         gameBorder = nil
         border = nil

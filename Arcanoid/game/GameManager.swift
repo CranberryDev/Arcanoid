@@ -38,11 +38,11 @@ class GameManager {
         if timeToUpdate == nil {
             timeToUpdate = currentTime + timeOfset
         } else {
-            let currentTime = Date().timeIntervalSince1970
+            let now = Date().timeIntervalSince1970
             if scene.gameState == GameScene.States.game {
-                movePlayer()
-                moveBoll()
-                logicUpdateTime = currentTime
+                movePlayer(now)
+                moveBoll(now)
+                logicUpdateTime = Date().timeIntervalSince1970
             } else if scene.gameState == GameScene.States.endGame {
                 transferToEndGameScene()
             }
@@ -69,7 +69,7 @@ class GameManager {
     
     //MARK: Movement methods
     
-    func movePlayer() {
+    func movePlayer(_ currentTime:Double) {
         var isMove = true
         switch gameCreator.player.direction {
         case 1:
@@ -78,7 +78,7 @@ class GameManager {
                 isMove = false
             }
             if isMove {
-                let corrector = getCorrector()
+                let corrector = getCorrector(currentTime)
                 gameCreator.player.node!.position.x = gameCreator.player.node!.position.x - CGFloat(10*corrector)
             }
         case 2:
@@ -87,7 +87,7 @@ class GameManager {
                 isMove = false
             }
             if isMove {
-                let corrector = getCorrector()
+                let corrector = getCorrector(currentTime)
                 gameCreator.player.node!.position.x = gameCreator.player.node!.position.x + CGFloat(10*corrector)
             }
         default:
@@ -95,7 +95,7 @@ class GameManager {
         }
     }
     
-    func moveBoll() {
+    func moveBoll(_ currentTime:Double) {
         var shouldMove = true
         let bollLocation:CGPoint = gameCreator.boll.boll!.position
         
@@ -170,8 +170,9 @@ class GameManager {
         }
         
         if shouldMove {
-            gameCreator.boll.boll!.position.x += CGFloat(7 * gameCreator.boll.direction!.x)
-            gameCreator.boll.boll!.position.y += CGFloat(7 * gameCreator.boll.direction!.y)
+            let corrector = getCorrector(currentTime)
+            gameCreator.boll.boll!.position.x += CGFloat(7 * gameCreator.boll.direction!.x * Double(corrector))
+            gameCreator.boll.boll!.position.y += CGFloat(7 * gameCreator.boll.direction!.y * Double(corrector))
         }
     }
     
@@ -184,6 +185,7 @@ class GameManager {
     
     func resetGame() {
         gameCreator.resetGame()
+        logicUpdateTime = nil
     }
     
     
@@ -206,10 +208,9 @@ class GameManager {
     }
     
     
-    private func getCorrector() -> CGFloat {
+    private func getCorrector(_ now:Double) -> CGFloat {
         var corrector:CGFloat = 1
         if logicUpdateTime != nil {
-            let now:Double = Date().timeIntervalSince1970
             corrector = CGFloat((now-logicUpdateTime)/frameTime)
             corrector = CGFloat(Float(String(format: "%.2f", corrector))!)
             if corrector <= 0 {
