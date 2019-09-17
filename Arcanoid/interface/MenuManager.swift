@@ -23,6 +23,10 @@ class MenuManager {
         static let mediumButton = "mediumButtonNode"
         static let hardButton = "hardButtonNode"
         static let backButton = "backButtonNode"
+        
+        //Game end menu
+        static let retry = "retryButtonNode"
+        static let mainMenu = "mainMenuButton"
     }
 
     var menuCreator:MenuCreator!
@@ -64,6 +68,11 @@ class MenuManager {
                 }
             }
         }
+    }
+    
+    
+    func toEndGameMenu() {
+        menuCreator.fromGameToEndGameMenu()
     }
     
 }

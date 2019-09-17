@@ -13,17 +13,24 @@ import os.log
 
 class GameScene: SKScene {
     
-//    public var menuCreator:MenuCreator!
+
     var menuManager:MenuManager!
     var gameManager:GameManager!
-    var gameState:Int = 1 //0 - menu, 1 - game, 2 - pause
+    var gameState:States = States.game //0 - menu, 1 - game, 2 - pause, 3 - end game
+    
+    enum States:Int {
+        case menu = 0
+        case game = 1
+        case pause = 2
+        case endGame = 3
+    }
     
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
-//        self.menuManager = MenuManager.init(scene: self.scene)
-        self.gameManager = GameManager.init(scene: self.scene)
+        self.menuManager = MenuManager.init(scene: self.scene)
+        self.gameManager = GameManager.init(scene: self.scene, menu: self.menuManager)
     }
     
     
@@ -36,11 +43,11 @@ class GameScene: SKScene {
             let location = touch.location(in: self)
             let touchedNodes = self.nodes(at: location)
             switch gameState {
-            case 0:
+            case States.menu:
                 menuManager.touchEndedHandler(touchedNodes: touchedNodes)
-            case 1:
+            case States.game:
                 gameManager.touchesEndedHandler(touchesNodes: touchedNodes);
-            case 2:
+            case States.pause:
                 os_log(.debug, "Pause game", "")
             default:
                 break
@@ -54,11 +61,11 @@ class GameScene: SKScene {
             let location = touch.location(in: self)
             let touchedNodes = self.nodes(at: location)
             switch gameState {
-            case 0:
+            case States.menu:
                 menuManager.touchBeganHandler(touchedNodes: touchedNodes)
-            case 1:
+            case States.game:
                 gameManager.touchesBeganHandler(touchesNodes: touchedNodes, location: location);
-            case 2:
+            case States.pause:
                 os_log(.debug, "Pause game", "")
             default:
                 break

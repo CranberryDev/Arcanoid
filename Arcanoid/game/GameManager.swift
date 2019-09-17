@@ -11,8 +11,9 @@ import SpriteKit
 
 class GameManager {
     
-    var scene: SKScene
+    var scene: GameScene
     var gameCreator:GameCreator!
+    var menuManager:MenuManager!
     
     var timeToUpdate:Double!
     var timeOfset:Double = 1
@@ -24,22 +25,22 @@ class GameManager {
         static var cellNode = "cellNode"
     }
     
-    init(scene: SKScene!) {
-        self.scene = scene
+    init(scene: SKScene!, menu: MenuManager) {
+        self.scene = scene.scene as! GameScene
+        self.menuManager = menu
         self.gameCreator = GameCreator.init(scene: scene)
-    }
-    
-    
-    func showGame() {
-
     }
     
     func update(currentTime:Double) {
         if timeToUpdate == nil {
             timeToUpdate = currentTime + timeOfset
         } else {
-            movePlayer()
-            moveBoll()
+            if scene.gameState == GameScene.States.game {
+                movePlayer()
+                moveBoll()
+            } else if scene.gameState == GameScene.States.endGame {
+                transferToEndGameScene()
+            }
         }
     }
     
@@ -62,7 +63,6 @@ class GameManager {
     
     //MARK: Movement methods
     
-    //Decides to move or not to move player by player x position compared to border x position
     func movePlayer() {
         var isMove = true
         switch gameCreator.player.direction {
@@ -104,8 +104,10 @@ class GameManager {
             gameCreator.boll.direction.y = -1
         } else if bollLocation.y <= gameCreator.border.leftLine.p1.y {
             shouldMove = false
+            scene.gameState = GameScene.States.endGame
             //End game
         } else {
+            //Collision with cell or with player
             let contactedNodesBottom:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x, y: bollLocation.y - bollOfset))
             let contactedNodesTop:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x, y: bollLocation.y + bollOfset))
             let contactedNodesRight:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x + bollOfset, y: bollLocation.y))
@@ -121,6 +123,8 @@ class GameManager {
                         //Hide node cell and change direction
                         gameCreator.gameBorder.removeChildren(in: [node])
                         gameCreator.boll.direction.y = -(gameCreator.boll.direction.y)
+                        gameCreator.score.counter += 1
+                        gameCreator.score.label.text = "Your score: \(gameCreator.score.counter)"
                         break;
                     }
                 }
@@ -129,6 +133,8 @@ class GameManager {
                     if node.name == NodeName.cellNode {
                         gameCreator.gameBorder.removeChildren(in: [node])
                         gameCreator.boll.direction.y = -(gameCreator.boll.direction.y)
+                        gameCreator.score.counter += 1
+                        gameCreator.score.label.text = "Your score: \(gameCreator.score.counter)"
                         break;
                     }
                 }
@@ -137,6 +143,8 @@ class GameManager {
                     if node.name == NodeName.cellNode {
                         gameCreator.gameBorder.removeChildren(in: [node])
                         gameCreator.boll.direction.x = -(gameCreator.boll.direction.x)
+                        gameCreator.score.counter += 1
+                        gameCreator.score.label.text = "Your score: \(gameCreator.score.counter)"
                         break;
                     }
                 }
@@ -145,6 +153,8 @@ class GameManager {
                     if node.name == NodeName.cellNode {
                         gameCreator.gameBorder.removeChildren(in: [node])
                         gameCreator.boll.direction.x = -(gameCreator.boll.direction.x)
+                        gameCreator.score.counter += 1
+                        gameCreator.score.label.text = "Your score: \(gameCreator.score.counter)"
                         break;
                     }
                 }
@@ -155,8 +165,32 @@ class GameManager {
             gameCreator.boll.boll!.position.x += CGFloat(7 * gameCreator.boll.direction!.x)
             gameCreator.boll.boll!.position.y += CGFloat(7 * gameCreator.boll.direction!.y)
         }
-        
-        
+    }
+    
+    
+    //MARK: Outer class integration
+    
+    func moveScoreForEndGameScene() {
+        gameCreator.scoreLabelForEndGameScene()
+    }
+    
+    
+    //MARK: Private methods
+    
+    //MARK: Transfer
+    
+    private func transferToEndGameScene() {
+        let duration = 0.3
+        gameCreator.gameBorder.run(SKAction.fadeOut(withDuration: duration))
+        gameCreator.boll.boll.run(SKAction.fadeOut(withDuration: duration))
+        gameCreator.player.node!.run(SKAction.fadeOut(withDuration: duration))
+        gameCreator.border.border!.run(SKAction.fadeOut(withDuration: duration)) {
+            self.gameCreator.gameBorder.isHidden = true
+            self.gameCreator.boll.boll.isHidden = true
+            self.gameCreator.player.node!.isHidden = true
+            self.gameCreator.border.border!.isHidden = true
+        }
+        menuManager.toEndGameMenu()
     }
     
     

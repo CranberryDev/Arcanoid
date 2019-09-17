@@ -13,29 +13,45 @@ class GameCreator {
     
     var scene: SKScene
     
-    
     var gameBorder: SKShapeNode!
     var boardArray: [(node: SKNode, x: Int, y: Int)] = []
     var border:BorderObject!
     var boll:BollObject!
     var player:PlayerObject!
     
+    //MARK: Common
+    var score:ScoreObject = ScoreObject()
+    
     init(scene: SKScene!) {
         self.scene = scene
-        
         initGameBoard()
+    }
+    
+    
+    //MARK: Move node methods
+    
+    func scoreLabelForEndGameScene() {
+        score.label.run(SKAction.move(to: CGPoint(x: 0, y: -300), duration: 0.3))
     }
     
     
     
     //MARK: Private methods
     
+    private func initCommon() {
+        score.label.text = "Your score: \(score.counter)";
+        score.label.fontSize = 35
+        score.label.fontColor = .darkGray
+        score.label.isHidden = false //
+        score.label.position = CGPoint(x: scene.size.width / -4, y: (scene.size.height/2) * -0.95)
+        self.scene.addChild(score.label)
+    }
+    
     private func initGameBoard() {
         //Init borders
         let borderMargin = 10
         let lineWidth = 10
         let bottomSpace = Int(scene.size.height / 20)
-        
         let leftBottom = CGPoint(x: Int(scene.size.width / -2) + borderMargin, y: Int(scene.size.height / -2) + borderMargin + bottomSpace)
         let leftTop = CGPoint(x: Int(scene.size.width / -2) + borderMargin, y: Int(scene.size.height / 2) - borderMargin)
         let rightTop = CGPoint(x: Int(scene.size.width / 2) - borderMargin, y: Int(scene.size.height / 2) - borderMargin)
@@ -65,7 +81,6 @@ class GameCreator {
         let rows = 44
         let gameRows = 15
         let cellMargin = 3
-        
         let allX = Int(scene.size.width) - borderMargin*2 - lineWidth*2 - ((columns - 1)*cellMargin)
         let allY = Int(scene.size.height) - borderMargin - bottomSpace - lineWidth - (rows - 1)*cellMargin
         let cellWidth = allX / columns
@@ -109,6 +124,7 @@ class GameCreator {
         
         initPlayer(cellWidth: cellWidth, cellHeigth: cellHeigth, bottomSpace: bottomSpace, cellMargin: cellMargin)
         initBoll(cellWidth: cellWidth, cellHeigth: cellHeigth, bottomSpace: bottomSpace, cellMargin: cellMargin)
+        initCommon()
     }
     
     

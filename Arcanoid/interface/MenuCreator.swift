@@ -12,30 +12,33 @@ class MenuCreator {
     
     static let fontName:String = "ArialRoundedMTBold"
 
-    var scene:SKScene
+    var scene:GameScene
     
     //MARK: Main menu props
-    
     var gameTitle:SKLabelNode = SKLabelNode(fontNamed: fontName)
     var bestScore:SKLabelNode = SKLabelNode(fontNamed: fontName)
     var playButton:ButtonComponent = ButtonComponent()
     var levelButton:ButtonComponent = ButtonComponent()
     
-    
     //MARK: Level difficulty props
-    
     var backButton:SKShapeNode!
     var easyButton:ButtonComponent = ButtonComponent()
     var mediumButton:ButtonComponent = ButtonComponent()
     var hardButton:ButtonComponent = ButtonComponent()
     
+    //MARK: End game menu
+    var retryButton:SKShapeNode!
+    var mainMenuButton:ButtonComponent = ButtonComponent()
+    
+    
     
     public init(scene: SKScene) {
-        self.scene = scene
+        self.scene = scene as! GameScene
         
         initMainMenu()
         initLevelDifficultyMenu()
-        showMenu()
+        initGameEndMenu()
+//        showMenu()
     }
     
     func showMenu() {
@@ -52,7 +55,33 @@ class MenuCreator {
     }
     
     
+    
+    
     //MARK: Screen transfer methods
+    
+    func fromMainMenuToGame() {
+        
+    }
+    
+    func fromGameToEndGameMenu() {
+        retryButton.setScale(0)
+        mainMenuButton.innerShape.setScale(0)
+        mainMenuButton.outerShape.setScale(0)
+        mainMenuButton.textLabel.setScale(0)
+        
+        retryButton.isHidden = false
+        mainMenuButton.innerShape.isHidden = false
+        mainMenuButton.outerShape.isHidden = false
+        mainMenuButton.textLabel.isHidden = false
+        
+        let duration = 0.3
+        retryButton.run(SKAction.scale(to: 1, duration: duration))
+        mainMenuButton.innerShape.run(SKAction.scale(to: 1, duration: duration))
+        mainMenuButton.outerShape.run(SKAction.scale(to: 1, duration: duration))
+        mainMenuButton.textLabel.run(SKAction.scale(to: 1, duration: duration))
+        
+        scene.gameManager.moveScoreForEndGameScene()
+    }
     
     func fromMainMenuToLevelDifficultyMenu() {
         collapseButtonElement(obj: playButton)
@@ -109,6 +138,40 @@ class MenuCreator {
     }
     
     //MARK: Init methods
+    
+
+    
+    private func initGameEndMenu() {
+        createButton(text: "Menu", name: MenuManager.NodeName.mainMenu, mainOffset: 150, obj: mainMenuButton)
+        
+        //Create retry button
+        let path = CGMutablePath()
+        path.addLine(to: CGPoint(x: 0, y: 25))
+        path.addArc(center: CGPoint(x: 0, y: 0), radius: 30, startAngle: CGFloat(-Double.pi * 0.2), endAngle: CGFloat(-Double.pi * 1.7), clockwise: true)
+        retryButton = SKShapeNode(path: path)
+        retryButton.strokeColor = .green
+        retryButton.lineWidth = 8
+        retryButton.position = CGPoint(x: 0, y: -100)
+        retryButton.isHidden = true
+        
+        let trianglePath = CGMutablePath()
+        trianglePath.addLines(between: [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 10)])
+        trianglePath.addLines(between: [CGPoint(x: 0, y: 10), CGPoint(x: 15, y: 0)])
+        trianglePath.addLines(between: [CGPoint(x: 15, y: 0), CGPoint(x: 0, y: -10)])
+        trianglePath.addLines(between: [CGPoint(x: 0, y: -10), CGPoint(x: 0, y: 0)])
+        let triangleNode = SKShapeNode(path: trianglePath)
+        triangleNode.lineWidth = 7
+        triangleNode.lineCap = CGLineCap(rawValue: 1)!
+        triangleNode.strokeColor = .green
+        triangleNode.fillColor = .green
+        triangleNode.run(SKAction.rotate(byAngle: CGFloat(-Double.pi/5), duration: 0))
+        triangleNode.position = path.currentPoint
+        
+        
+        self.scene.addChild(retryButton)
+        retryButton.addChild(triangleNode)
+        
+    }
     
     private func initLevelDifficultyMenu() {
         //Create levels buttons

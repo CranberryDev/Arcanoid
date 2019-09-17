@@ -22,6 +22,7 @@
 		2A51C0CE232EA3D700C29AA4 /* PlayerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0CD232EA3D700C29AA4 /* PlayerObject.swift */; };
 		2A51C0D0232EA7E500C29AA4 /* BollObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0CF232EA7E500C29AA4 /* BollObject.swift */; };
 		2A51C0D2232EC8EE00C29AA4 /* BorderObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0D1232EC8EE00C29AA4 /* BorderObject.swift */; };
+		2A51C0F82331520900C29AA4 /* ScoreObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A51C0F72331520900C29AA4 /* ScoreObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		2A51C0CD232EA3D700C29AA4 /* PlayerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerObject.swift; sourceTree = "<group>"; };
 		2A51C0CF232EA7E500C29AA4 /* BollObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BollObject.swift; sourceTree = "<group>"; };
 		2A51C0D1232EC8EE00C29AA4 /* BorderObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderObject.swift; sourceTree = "<group>"; };
+		2A51C0F72331520900C29AA4 /* ScoreObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				2A51C0CD232EA3D700C29AA4 /* PlayerObject.swift */,
 				2A51C0CF232EA7E500C29AA4 /* BollObject.swift */,
 				2A51C0D1232EC8EE00C29AA4 /* BorderObject.swift */,
+				2A51C0F72331520900C29AA4 /* ScoreObject.swift */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A51C0CE232EA3D700C29AA4 /* PlayerObject.swift in Sources */,
+				2A51C0F82331520900C29AA4 /* ScoreObject.swift in Sources */,
 				2A51C0D0232EA7E500C29AA4 /* BollObject.swift in Sources */,
 				2A51C0CA232E85B600C29AA4 /* GameCreator.swift in Sources */,
 				2A51C0CC232E860800C29AA4 /* GameManager.swift in Sources */,
