@@ -30,10 +30,10 @@ class MenuManager {
     }
 
     var menuCreator:MenuCreator!
-    var scene:SKScene
+    var scene:GameScene
     
     public init(scene: SKScene?) {
-        self.scene = scene!
+        self.scene = scene! as! GameScene
         self.menuCreator = MenuCreator.init(scene: scene!)
     }
     
@@ -46,6 +46,9 @@ class MenuManager {
                 menuCreator.fromMainMenuToLevelDifficultyMenu()
             } else if node.name == NodeName.backButton {
                 menuCreator.fromLevelDifficyltyMenuToMainMenu()
+            } else if node.name == NodeName.retry {
+                menuCreator!.resetGame()
+                scene.gameManager.resetGame()
             }
         }
     }

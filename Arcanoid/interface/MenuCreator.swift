@@ -63,22 +63,17 @@ class MenuCreator {
         
     }
     
-    func fromGameToEndGameMenu() {
-        retryButton.setScale(0)
-        mainMenuButton.innerShape.setScale(0)
-        mainMenuButton.outerShape.setScale(0)
-        mainMenuButton.textLabel.setScale(0)
-        
+    func fromGameToEndGameMenu() {        
         retryButton.isHidden = false
         mainMenuButton.innerShape.isHidden = false
         mainMenuButton.outerShape.isHidden = false
         mainMenuButton.textLabel.isHidden = false
         
         let duration = 0.3
-        retryButton.run(SKAction.scale(to: 1, duration: duration))
-        mainMenuButton.innerShape.run(SKAction.scale(to: 1, duration: duration))
-        mainMenuButton.outerShape.run(SKAction.scale(to: 1, duration: duration))
-        mainMenuButton.textLabel.run(SKAction.scale(to: 1, duration: duration))
+        retryButton.run(SKAction.fadeIn(withDuration: duration))
+        mainMenuButton.innerShape.run(SKAction.fadeIn(withDuration: duration))
+        mainMenuButton.outerShape.run(SKAction.fadeIn(withDuration: duration))
+        mainMenuButton.textLabel.run(SKAction.fadeIn(withDuration: duration))
         
         scene.gameManager.moveScoreForEndGameScene()
     }
@@ -106,6 +101,18 @@ class MenuCreator {
         
         backButton.run(SKAction.scale(by: 0, duration: 0.5)) {
             self.backButton.isHidden = true
+        }
+    }
+    
+    func resetGame() {
+        retryButton.run(SKAction.fadeOut(withDuration: 0.3))
+        mainMenuButton.innerShape.run(SKAction.fadeOut(withDuration: 0.3))
+        mainMenuButton.outerShape.run(SKAction.fadeOut(withDuration: 0.3))
+        mainMenuButton.textLabel.run(SKAction.fadeOut(withDuration: 0.3)) {
+            self.retryButton.isHidden = true
+            self.mainMenuButton.innerShape.isHidden = true
+            self.mainMenuButton.outerShape.isHidden = true
+            self.mainMenuButton.textLabel.isHidden = true
         }
     }
     
@@ -139,8 +146,6 @@ class MenuCreator {
     
     //MARK: Init methods
     
-
-    
     private func initGameEndMenu() {
         createButton(text: "Menu", name: MenuManager.NodeName.mainMenu, mainOffset: 150, obj: mainMenuButton)
         
@@ -153,6 +158,7 @@ class MenuCreator {
         retryButton.lineWidth = 8
         retryButton.position = CGPoint(x: 0, y: -100)
         retryButton.isHidden = true
+        retryButton.name = MenuManager.NodeName.retry
         
         let trianglePath = CGMutablePath()
         trianglePath.addLines(between: [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 10)])

@@ -45,6 +45,8 @@ class GameScene: SKScene {
             switch gameState {
             case States.menu:
                 menuManager.touchEndedHandler(touchedNodes: touchedNodes)
+            case States.endGame:
+                menuManager.touchEndedHandler(touchedNodes: touchedNodes)
             case States.game:
                 gameManager.touchesEndedHandler(touchesNodes: touchedNodes);
             case States.pause:

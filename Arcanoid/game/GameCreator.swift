@@ -11,7 +11,7 @@ import SpriteKit
 
 class GameCreator {
     
-    var scene: SKScene
+    var scene: GameScene
     
     var gameBorder: SKShapeNode!
     var boardArray: [(node: SKNode, x: Int, y: Int)] = []
@@ -23,7 +23,7 @@ class GameCreator {
     var score:ScoreObject = ScoreObject()
     
     init(scene: SKScene!) {
-        self.scene = scene
+        self.scene = scene as! GameScene
         initGameBoard()
     }
     
@@ -34,18 +34,22 @@ class GameCreator {
         score.label.run(SKAction.move(to: CGPoint(x: 0, y: -300), duration: 0.3))
     }
     
+
+    func resetGame() {
+        scene.removeChildren(in: [boll.boll!, player.node!, gameBorder, border.border, score.label])
+        
+        gameBorder = nil
+        border = nil
+        boll = nil
+        player = nil
+        score = ScoreObject()
+        
+        initGameBoard()
+        scene.gameState = GameScene.States.game
+    }
     
     
     //MARK: Private methods
-    
-    private func initCommon() {
-        score.label.text = "Your score: \(score.counter)";
-        score.label.fontSize = 35
-        score.label.fontColor = .darkGray
-        score.label.isHidden = false //
-        score.label.position = CGPoint(x: scene.size.width / -4, y: (scene.size.height/2) * -0.95)
-        self.scene.addChild(score.label)
-    }
     
     private func initGameBoard() {
         //Init borders
@@ -73,7 +77,6 @@ class GameCreator {
                                    leftLine: (p1: leftBottom, p2: leftTop),
                                    topLine: (p1: leftTop, p2: rightTop),
                                    rightLine: (p1: rightTop, p2: rigthBottom), scene: scene)
-        
         scene.addChild(border.border)
         
         //Init gameBoard array
@@ -97,18 +100,11 @@ class GameCreator {
                 //Add node if its in the game area
                 if j < gameRows {
                     let point = CGPoint(x: loopX, y: loopY)
-                    let node = SKShapeNode(rectOf: CGSize(width: cellWidth, height: cellHeigth))
-                    node.isHidden = false
-                    node.position = point
-                    node.zPosition = 1
-                    node.strokeColor = .cyan
-                    
                     let sprite = SKSpriteNode(color: .cyan, size: CGSize(width: cellWidth, height: cellHeigth))
                     sprite.position = point
                     sprite.zPosition = 1
                     sprite.isHidden = false
                     sprite.name = GameManager.NodeName.cellNode
-//                    sprite.color = .yellow
                     
                     boardArray.append((node: sprite, x: i, y: j))
                     gameBorder.addChild(sprite)
@@ -127,6 +123,14 @@ class GameCreator {
         initCommon()
     }
     
+    private func initCommon() {
+        score.label.text = "Your score: \(score.counter)";
+        score.label.fontSize = 35
+        score.label.fontColor = .darkGray
+        score.label.isHidden = false //
+        score.label.position = CGPoint(x: scene.size.width / -4, y: (scene.size.height/2) * -0.95)
+        self.scene.addChild(score.label)
+    }
     
     private func initPlayer(cellWidth:Int, cellHeigth: Int, bottomSpace:Int, cellMargin:Int) {
         let initX = 0

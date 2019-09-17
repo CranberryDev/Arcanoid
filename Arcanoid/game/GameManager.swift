@@ -174,6 +174,10 @@ class GameManager {
         gameCreator.scoreLabelForEndGameScene()
     }
     
+    func resetGame() {
+        gameCreator.resetGame()
+    }
+    
     
     //MARK: Private methods
     
