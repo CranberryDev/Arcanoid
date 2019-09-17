@@ -19,12 +19,13 @@ class GameCreator {
     var boll:BollObject!
     var player:PlayerObject!
     
-    //MARK: Common
     var score:ScoreObject = ScoreObject()
+    
     
     init(scene: SKScene!) {
         self.scene = scene as! GameScene
         initGameBoard()
+        initCommon()
     }
     
     
@@ -36,16 +37,17 @@ class GameCreator {
     
 
     func resetGame() {
-        scene.removeChildren(in: [boll.boll!, player.node!, gameBorder, border.border, score.label])
+        scene.removeChildren(in: [boll.boll!, player.node!, gameBorder, border.border])
         
         gameBorder = nil
         border = nil
         boll = nil
         player = nil
-        score = ScoreObject()
         
         initGameBoard()
         scene.gameState = GameScene.States.game
+        
+        resetScore()
     }
     
     
@@ -120,7 +122,6 @@ class GameCreator {
         
         initPlayer(cellWidth: cellWidth, cellHeigth: cellHeigth, bottomSpace: bottomSpace, cellMargin: cellMargin)
         initBoll(cellWidth: cellWidth, cellHeigth: cellHeigth, bottomSpace: bottomSpace, cellMargin: cellMargin)
-        initCommon()
     }
     
     private func initCommon() {
@@ -130,6 +131,12 @@ class GameCreator {
         score.label.isHidden = false //
         score.label.position = CGPoint(x: scene.size.width / -4, y: (scene.size.height/2) * -0.95)
         self.scene.addChild(score.label)
+    }
+    
+    private func resetScore() {
+        score.counter = 0
+        score.label.text = "Your score: 0"
+        score.label.run(SKAction.move(to: CGPoint(x: scene.size.width / -4, y: (scene.size.height/2) * -0.95), duration: 0.5))
     }
     
     private func initPlayer(cellWidth:Int, cellHeigth: Int, bottomSpace:Int, cellMargin:Int) {
