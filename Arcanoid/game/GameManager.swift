@@ -121,7 +121,8 @@ class GameManager {
             let contactedNodesRight:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x + bollOfset, y: bollLocation.y))
             let contactedNodesLeft:[SKNode] = scene.nodes(at: CGPoint(x: bollLocation.x - bollOfset, y: bollLocation.y))
             
-            if contactedNodesBottom.count != 1 {
+            if contactedNodesBottom.count != 1 && gameCreator.boll.direction.y < 0 {
+                //When boll go bottom then y coordinate should be negative
                 for node in contactedNodesBottom {
                     if node.name == NodeName.playerNode && !(gameCreator.boll.direction.x == 1 && gameCreator.boll.direction.y == 1) {
                         //Change boll directino from left to right and from rigth to left
@@ -136,7 +137,8 @@ class GameManager {
                         break;
                     }
                 }
-            } else if contactedNodesTop.count != 1 {
+            } else if contactedNodesTop.count != 1 && gameCreator.boll.direction.y > 0 {
+                //When boll go up then y coordinate should be positive
                 for node in contactedNodesTop {
                     if node.name == NodeName.cellNode {
                         gameCreator.gameBorder.removeChildren(in: [node])
@@ -146,7 +148,8 @@ class GameManager {
                         break;
                     }
                 }
-            } else if contactedNodesRight.count != 1 {
+            } else if contactedNodesRight.count != 1 && gameCreator.boll.direction.x > 0 {
+                //When boll go right then x coordinate should be positive
                 for node in contactedNodesRight {
                     if node.name == NodeName.cellNode {
                         gameCreator.gameBorder.removeChildren(in: [node])
@@ -156,7 +159,8 @@ class GameManager {
                         break;
                     }
                 }
-            } else if contactedNodesLeft.count != 1 {
+            } else if contactedNodesLeft.count != 1 && gameCreator.boll.direction.x < 0 {
+                //When boll go left then x coordinate should be negative
                 for node in contactedNodesLeft {
                     if node.name == NodeName.cellNode {
                         gameCreator.gameBorder.removeChildren(in: [node])
